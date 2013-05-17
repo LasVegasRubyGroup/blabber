@@ -1,0 +1,24 @@
+<% if @blabs.present? %>
+	<ul id="blab-list">
+		<% @blabs.each do |blab| %>
+			<li class="blab">
+				<div class="panel radius">
+					<div class="row">
+						<div class="small-3 large-1 columns">
+							<a href="/users/<%= blab.user.id %>"><%= image_tag avatar_url(blab.user) %></a>
+						</div>
+						<div class="small-9 large-11 columns">
+							<strong><%= blab.user.first_name %>: </strong>
+							<%= blab.text %><br>
+							<%= link_to 'details', blab, class: 'details' %>                                            
+						</div>
+					</div>
+				</div>
+			</li>
+		<% end %>
+	</ul>
+<% else %>
+	<div class="panel radius">
+		<strong>crickets...</strong>
+	</div>
+<% end %>
