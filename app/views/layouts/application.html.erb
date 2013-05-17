@@ -25,22 +25,40 @@
 
 		<div class="fixed">
 			<nav class="top-bar">
-				<ul class="title-area">
-					<li class="name">
-						<h1><a href="/">Blabber</a></h1>
-					</li>
-					<li class="toggle-topbar menu-icon">
-						<a href="#"><span></span></a>
-					</li>
-				</ul>
+					<ul class="title-area">
+						<li class="name">
+							<h1><a href="/blabs">Blabber</a></h1>
+						</li>
+						<li class="toggle-topbar menu-icon">
+							<a href="#"><span></span></a>
+						</li>
+					</ul>
 				<section class="top-bar-section">
 					<ul class="right">
-						<li class="divider"></li>
-						<li><a href="#">Sign In</a></li>
+						<% if current_user %>
+							<li><a>Hi <%= current_user.name.split(' ')[0] %>!</a><li>
+							<li class="divider"></li>
+							<li><%= link_to "Sign Out", signout_path %></li>
+						<% else %>
+							<li class="divider"></li>
+							<li><%= link_to "Sign In", signin_path %></li>
+						<% end %>
 					</ul>
 				</section>
 			</nav>
 		</div>
+
+		<% if flash[:notice] %>
+			<div class="global alert-box">
+				<%= flash[:notice] %>
+				<a href="" class="close">&times;</a>
+			</div>
+		<% elsif flash[:error] %>
+			<div class="global alert-box alert">
+				<%= flash[:error] %>
+				<a href="" class="close">&times;</a>
+			</div>
+		<% end %>
 
 		<%= yield %>
 
