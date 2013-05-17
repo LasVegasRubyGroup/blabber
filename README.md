@@ -612,7 +612,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   </div>
 </div>
 ```   
-86) define authentication method in application_controller above private:  
+86) define authentication method in application_controller below the word private:  
 ```ruby
 def authorize
   redirect_to signin_path, alert: "please login first" if current_user.nil?
