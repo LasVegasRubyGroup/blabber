@@ -139,7 +139,28 @@ a img:hover {border: 1px solid #FC8E6C;}
 .ransack.columns {height: 40px; margin-top: 5px;}
 ```
 26) require it in application.css which should now look like this:
-
+```css
+*= require_self
+*= require foundation_and_overrides
+*= require custom
+*= require_tree .
+*/
+```
+27) ```git add . ```
+28) ```git commit -m "improve index and paste custom css"
+29) open models/user.rb and make it look like this:
+```ruby
+class CreateUsers < ActiveRecord::Migration
+  def change
+    create_table :users do |t|
+      t.string :name
+      t.string :email
+      t.string :password_digest
+      t.timestamps
+    end
+  end
+end
+```
 
 
 
