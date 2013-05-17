@@ -38,15 +38,17 @@ root :to => 'site#index'
 15) ```git commit -m "add site index"```   
 16) add foundation. your gem file should now look like this:  
 ```ruby
+source 'https://rubygems.org'
+
 gem 'rails', '3.2.13'
 gem 'jquery-rails'
 gem 'sqlite3'
 
 group :assets do
- gem 'sass-rails',   '~> 3.2.3'
- gem 'coffee-rails', '~> 3.2.1'
- gem 'uglifier', '>= 1.0.3'
- gem 'zurb-foundation'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'uglifier', '>= 1.0.3'
+  gem 'zurb-foundation'
 end
 ```
 17) ```bundle``` (server restart required)  
@@ -256,14 +258,14 @@ resources :users, only: [:create]
 43) make application_controller.rb look like this:  
 ```ruby
 class ApplicationController < ActionController::Base
- protect_from_forgery
+  protect_from_forgery
  
- private
+  private
 
- def current_user
-  @current_user ||= User.find(session[:user_id]) if session[:user_id]
- end
- helper_method :current_user
+  def current_user
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+  helper_method :current_user
  
 end
 ```
@@ -281,24 +283,212 @@ class SessionsController < ApplicationController
  def new
  end
 
- def create
-  user = User.find_by_email(params[:email])
-  if user && user.authenticate(params[:password])
-   session[:user_id] = user.id
-   redirect_to root_url, notice: "greetings earthling!"
-  else
-   flash[:error] = "email or password is invalid"
-   render "new"
+  def create
+    user = User.find_by_email(params[:email])
+    if user && user.authenticate(params[:password])
+      session[:user_id] = user.id
+      redirect_to root_url, notice: "greetings earthling!"
+    else
+      flash[:error] = "email or password is invalid"
+      render "new"
+    end
   end
- end
 
- def destroy
-  session[:user_id] = nil
-  redirect_to root_url, notice: "see ya later alligator!"
- end
+  def destroy
+    session[:user_id] = nil
+    redirect_to root_url, notice: "see ya later alligator!"
+  end
 
 end
 ```
+47) make a new folder in app/views called sessions  
+48) make a new file called new.html.erb inside views/sessions  
+49) make sessions/new.html.erb look like this:  
+```html
+<div class="row" id="signin">
+	<div class="small-12 columns">
+
+		<h1>Sign In</h1>
+
+		<%= form_tag sessions_path do %>
+			<div class="field">
+				<%= label_tag :email %><br>
+				<%= text_field_tag :email, params[:email] %>
+			</div>
+			<div class="field">
+				<%= label_tag :password %><br>
+				<%= password_field_tag :password %>
+			</div>
+			<div><%= submit_tag "Sign In", class: "button radius" %></div>
+		<% end %>
+	</div>
+</div>
+```
+50) in application.html.erb add the sign in logic to the nav:  
+```html
+<div class="fixed">
+  <nav class="top-bar">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a href="/">Blabber</a></h1>
+      </li>
+      <li class="toggle-topbar menu-icon">
+				<a href="#"><span></span></a>
+      </li>
+    </ul>
+    <section class="top-bar-section">
+      <ul class="right">
+				<% if current_user %>
+					<li><a>Hi <%= current_user.name.split(' ')[0] %>!</a><li>
+					<li class="divider"></li>
+					<li><%= link_to "Sign Out", signout_path %></li>
+				<% else %>
+					<li class="divider"></li>
+					<li><%= link_to "Sign In", signin_path %></li>
+				<% end %>
+      </ul>
+    </section>
+  </nav>
+</div>
+```
+51) add session id assignment to create action in users_controller.rb as follows:   
+```ruby
+def create
+	@user = User.new(params[:user])
+	if @user.save
+		session[:user_id] = @user.id
+		redirect_to root_url, notice: "prepare to blab!"
+	else
+		render "new"
+	end
+end
+```
+51) change the title link in the nav as follows:  
+```html
+<h1><a href="/blabs">Blabber</a></h1>
+```
+52) add the following code just below the nav:  
+```html
+<% if flash[:notice] %>
+	<div class="global alert-box">
+		<%= flash[:notice] %>
+		<a href="" class="close">&times;</a>
+	</div>
+<% elsif flash[:error] %>
+	<div class="global alert-box alert">
+		<%= flash[:error] %>
+		<a href="" class="close">&times;</a>
+	</div>
+<% end %>
+```
+53) modify index.html.erb as follows:  
+```html
+<div class="row" id="welcome">
+	<div class="large-8 large-offset-2 columns">
+		<div class="panel radius">
+			<h2>Welcome to Blabber</h2>
+
+			<% if current_user %>
+				<div class="row">
+					<div class="large-8 large-offset-2 columns">
+						<div class="panel radius white">
+							<h3>go do some blabbing!</h3>
+						</div>
+					</div>
+				</div>
+			<% else %>
+				<div class="row">
+					<div class="large-6 large-offset-3 columns">
+						<div class="panel radius white">
+							<h3>if ur a user</h3>
+							<%= link_to "Sign In", signin_path, class: "button radius" %>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-6 large-offset-3 columns">
+						<div class="panel radius white">
+							<h3>if ur a noob</h3>
+							<%= link_to "Sign Up", signup_path, class: "button radius" %>
+						</div>
+					</div>
+				</div>
+			<% end %>
+
+		</div>
+	</div>
+</div>
+```
+54) ```git add . ```  
+55) ```git commit -m "add session controller and sign in form" ```  
+56) prepare for deployment by adding pg gem. gemfile should look like this:  
+```ruby
+source 'https://rubygems.org'
+
+gem 'rails', '3.2.13'
+gem 'jquery-rails'
+gem 'bcrypt-ruby'
+gem 'pg'
+
+group :assets do
+	gem 'sass-rails',   '~> 3.2.3'
+	gem 'coffee-rails', '~> 3.2.1'
+	gem 'uglifier', '>= 1.0.3'
+	gem 'zurb-foundation'
+end
+
+group :development do
+	gem 'sqlite3'
+end
+```
+57) ```bundle``` 
+58) delete production from config/databse.yml, should look like this now:
+```ruby
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+test:
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+```
+59) add the following line anywhere in config/application.rb for heroku:  
+```ruby
+config.assets.initialize_on_precompile = false 
+```
+60) ```git add . ```  
+61) ```git commit -m "add postgres and heroku configs" ```  
+62) you should already have created a heroku account (https://id.heroku.com/signup)  
+63) you should already have heroku toolbelt (https://toolbelt.heroku.com/) installed  
+64) test connection by running ```heroku login```  
+65) ```heroku create```  
+66) ```git push heroku master```  
+67) ```heroku run rake db:migrate```  
+68) copy paste url into browser  
+69) ```rails g scaffold blab```  
+70) open migrate/######create_blabs.rb and make it look like this:  
+```ruby
+class CreateBlabs < ActiveRecord::Migration
+  def change
+    create_table :blabs do |t|
+			t.string :text
+			t.integer :user_id
+			t.timestamps
+    end
+  end
+end
+```
+71) 
+
+
+
+
+
+
 
 
 
