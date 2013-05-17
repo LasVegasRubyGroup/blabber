@@ -785,7 +785,6 @@ end
 110) ```git commit -m "first_name method, dry up views, ransack" ```  
 111) ```git push heroku```
 
-### if u did everything correctly it should look like this:
-### http://vast-eyrie-1275.herokuapp.com/
-### now go make it better!
+
+### completed app: http://vast-eyrie-1275.herokuapp.com/
 
