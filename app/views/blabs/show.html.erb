@@ -1,5 +1,20 @@
-<p id="notice"><%= notice %></p>
-
-
-<%= link_to 'Edit', edit_blab_path(@blab) %> |
-<%= link_to 'Back', blabs_path %>
+<div class="row" id="show-blab">
+	<div class="large-8 large-offset-2 columns">
+		<div class="panel light radius">
+			<h2>
+			...on <%= @blab.created_at.strftime("%b %d, %Y") %>
+			<br>this was blabbed by
+			</h2>
+			<p id="boom"><%= @blab.user.name.split(' ')[0] %>!</p>
+			<div class="row">
+				<div class="large-10 large-offset-1 columns">
+					<div class="white panel radius">
+						<h3>"<%= @blab.text %>"<h3>
+					</div>
+				</div>
+			</div>
+			<%= link_to 'go blabber', blabs_path, class: "button radius secondary" %>
+			<%= link_to 'edit blab', edit_blab_path, class: "button radius secondary" %>
+		</div>
+	</div>
+</div>

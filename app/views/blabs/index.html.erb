@@ -1,21 +1,27 @@
-<h1>Listing blabs</h1>
+<div class="row" id="index-blab">
+	<div class="small-12 columns">
+		<h1>All The Blabber</h1>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
-<% @blabs.each do |blab| %>
-  <tr>
-    <td><%= link_to 'Show', blab %></td>
-    <td><%= link_to 'Edit', edit_blab_path(blab) %></td>
-    <td><%= link_to 'Destroy', blab, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+		<%= link_to 'new blab', new_blab_path, class: "button radius" %>
 
-<br />
 
-<%= link_to 'New Blab', new_blab_path %>
+		<% if @blabs.present? %>
+			<ul id="blab-list">
+				<% @blabs.each do |blab| %>
+					<li class="blab">
+						<div class="panel radius">
+							<strong><%= blab.user.name.split(' ')[0] %>: </strong>
+							<%= blab.text %><br>
+							<%= link_to 'details', blab, class: 'details' %>
+						</div>
+					</li>
+				<% end %>
+			</ul>
+		<% else %>
+			<div class="panel radius">
+				<strong>crickets...</strong>
+			</div>
+		<% end %>
+	</div>
+</div>
