@@ -523,7 +523,7 @@ to look like this instead:
 ```ruby
 redirect_to blabs_path, notice: "prepare to blab!"
 ```
-78) in stylesheets folder delete scaffolds.css.scss and blabs.css.scss
+78) in stylesheets folder delete scaffolds.css.scss and blabs.css.scss  
 79) ```git add . ```  
 80) ```git commit -m "blab scaffold, model relationships, blabs redirects" ```  
 81) make views/blabs/new.html.erb look like this:  
@@ -626,7 +626,7 @@ before_filter :authorize
 89) ```git commit -m "add blab views and authentication filter" ```  
 90) ```git push heroku```  
 91) ```heroku run rake db:migrate```  
-92) in blabs/index.html change the <li class="blab"> as follows:  
+92) in blabs/index.html change ```<li class="blab">``` as follows:  
 ```html
 <li class="blab">
   <div class="panel radius">
@@ -756,7 +756,7 @@ end
 104) replace all instances of ```.name.split(' ')[0]``` with ```.first_name```  
   
 105) add this to your gemfile: ``` gem 'ransack' ```  
-106) ```bundle```
+106) ```bundle```  
 107) make the index action of blabs_controller look like this:  
 ```ruby
 def index
@@ -785,5 +785,7 @@ end
 110) ```git commit -m "first_name method, dry up views, ransack" ```  
 111) ```git push heroku```
 
-### NOW GO MAKE IT BETTER!
+### if u did everything correctly it should look like this:
+### http://vast-eyrie-1275.herokuapp.com/
+### now go make it better!
 
