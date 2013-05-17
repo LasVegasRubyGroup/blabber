@@ -2,6 +2,16 @@
 	<div class="small-12 columns">
 		<h1>All The Blabber</h1>
 		<%= link_to 'new blab', new_blab_path, class: "button radius" %>
+
+		<%= search_form_for @search do |f| %>
+			<div class="row">
+				<div class="small-12 columns ransack">
+					<%= f.text_field :text_cont, {placeholder: 'search the blabber...'} %>
+					<%= f.submit "search", class: "ransack button secondary small" %>
+				</div>                
+			</div>
+		<% end %>
+
 		<%= render 'list' %>
 	</div>
 </div>

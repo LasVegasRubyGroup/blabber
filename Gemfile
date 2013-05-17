@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 gem 'jquery-rails'
 gem 'bcrypt-ruby'
+gem 'ransack'
 gem 'pg'
 
 group :assets do

@@ -5,7 +5,8 @@ class BlabsController < ApplicationController
   # GET /blabs
   # GET /blabs.json
   def index
-    @blabs = Blab.all
+		@search = Blab.search(params[:q])
+		@blabs = @search.result
 
     respond_to do |format|
       format.html # index.html.erb
