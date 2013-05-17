@@ -441,7 +441,7 @@ group :development do
   gem 'sqlite3'
 end
 ```
-57) ```bundle``` 
+57) ```bundle```   
 58) delete production from config/databse.yml, should look like this now:
 ```ruby
 development:
@@ -482,40 +482,308 @@ class CreateBlabs < ActiveRecord::Migration
   end
 end
 ```
-71) 
+71) ```rake db:migrate```   
+72) make models/blab.rb look like this:  
+```ruby
+class Blab < ActiveRecord::Base
+  attr_accessible :text
+  validates_presence_of :text
+  belongs_to :user
+end
+```
+73) add the following line to models/user.rb:  
+```ruby
+has_many :blabs
+```
+74) in blabs_controller.rb on line 47 directly below "if @blab.save" add this:  
+```ruby
+current_user.blabs << @blab
+```
+75) in blabs_controller.rb change line 48 to say:  
+```ruby
+format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
+```
+76) in blabs_controller.rb change line 64 to say:  
+```ruby
+format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
+```
+77) in sessions_controller.rb change the following line:  
+```ruby
+redirect_to root_url, notice: "greetings earthling!"
+```
+to look like this instead:
+```ruby
+redirect_to blabs_path, notice: "greetings earthling!"
+```
+77) in users_controller.rb change the following line:  
+```ruby
+redirect_to root_url, notice: "prepare to blab!"
+```
+to look like this instead:
+```ruby
+redirect_to blabs_path, notice: "prepare to blab!"
+```
+78) in stylesheets folder delete scaffolds.css.scss and blabs.css.scss
+79) ```git add . ```  
+80) ```git commit -m "blab scaffold, model relationships, blabs redirects" ```  
+81) make views/blabs/new.html.erb look like this:  
+```html
+<div class="row" id="new-blab">
+  <div class="small-12 columns">
+    <h1>New blab</h1>
+    <%= render 'form' %>
+  </div>
+</div>
+```
+82) make views/blabs/edit.html.erb look like this:  
+```html
+<div class="row" id="edit-blab">
+  <div class="small-12 columns">
+    <h1>Edit blab</h1>
+    <%= render 'form' %>
+  </div>
+</div>
+```
+83) make views/blabs/_form.html.erb look like this:  
+```html
+<%= form_for @blab do |f| %>
+  <% if @blab.errors.any? %>
+    <% @blab.errors.full_messages.each do |message| %>
+      <div class="alert-box alert"><%= message %></div>
+    <% end %>
+  <% end %>
+
+  <div class="panel radius">
+    <%= f.text_field :text, {placeholder: 'put your blabber here...'} %>
+  </div>
+
+  <%= f.submit "blabber time", class: "button radius inline" %>
+  <%= link_to 'go back', blabs_path, class: "button radius inline secondary" %>
+<% end %>
+```
+84) make views/blabs/index.html.erb look like this:  
+```html
+<div class="row" id="index-blab">
+  <div class="small-12 columns">
+    <h1>All The Blabber</h1>
+
+    <%= link_to 'new blab', new_blab_path, class: "button radius" %>
+
+    <% if @blabs.present? %>
+      <ul id="blab-list">
+        <% @blabs.each do |blab| %>
+          <li class="blab">
+            <div class="panel radius">
+              <strong><%= blab.user.name.split(' ')[0] %>: </strong>
+              <%= blab.text %><br>
+              <%= link_to 'details', blab, class: 'details' %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="panel radius">
+        <strong>crickets...</strong>
+      </div>
+    <% end %>
+  </div>
+</div>
+```
+85) make views/blabs/show.html.erb look like this:  
+```html
+<div class="row" id="show-blab">
+  <div class="large-8 large-offset-2 columns">
+    <div class="panel light radius">
+      <h2>
+        ...on <%= @blab.created_at.strftime("%b %d, %Y") %>
+        <br>this was blabbed by
+      </h2>
+      <p id="boom"><%= @blab.user.name.split(' ')[0] %>!</p>
+      <div class="row">
+        <div class="large-10 large-offset-1 columns">
+          <div class="white panel radius">
+            <h3>"<%= @blab.text %>"<h3>
+          </div>
+        </div>
+      </div>
+      <%= link_to 'go blabber', blabs_path, class: "button radius secondary" %>
+      <%= link_to 'edit blab', edit_blab_path, class: "button radius secondary" %>
+    </div>
+  </div>
+</div>
+```   
+86) define authentication method in application_controller above private:  
+```ruby
+def authorize
+  redirect_to signin_path, alert: "please login first" if current_user.nil?
+end
+```
+87) add a before filter to the top of blabs controller:  
+```ruby
+before_filter :authorize
+```
+88) ```git add . ```  
+89) ```git commit -m "add blab views and authentication filter" ```  
+90) ```git push heroku```  
+91) ```heroku run rake db:migrate```  
+92) in blabs/index.html change the <li class="blab"> as follows:  
+```html
+<li class="blab">
+  <div class="panel radius">
+    <div class="row">
+      <div class="small-3 large-1 columns">
+        <%= image_tag avatar_url(blab.user) %>
+      </div>
+      <div class="small-9 large-11 columns">
+        <strong><%= blab.user.name.split(' ')[0] %>: </strong>
+        <%= blab.text %><br>
+        <%= link_to 'details', blab, class: 'details' %>                                            
+      </div>
+    </div>
+  </div>
+</li>
+```
+93) in application_helper, add the following method:  
+```ruby
+def avatar_url(user)
+  gravatar_id = Digest::MD5::hexdigest(user.email).downcase
+  "http://gravatar.com/avatar/#{gravatar_id}.png"
+end
+```
+94) in users_controller.rb add a show method:  
+```ruby
+def show
+  @user = current_user
+  @blabs = @user.blabs
+end
+```
+95) in config routes add show to the users resource as follows:  
+```ruby
+resources :users, only: [:create, :show] 
+```
+96) make a new file in views/users called show.html.erb that looks like this:  
+```html
+<div class="row" id="index-blab">
+  <div class="small-12 columns">
+    <h1><%= @user.name.split(' ')[0] %>'s Blabber</h1>
 
 
+    <% if @blabs.present? %>
+      <ul id="blab-list">
+        <% @blabs.each do |blab| %>
+          <li class="blab">
+            <div class="panel radius">
+              <div class="row">
+                <div class="small-3 large-1 columns">
+                  <%= image_tag avatar_url(blab.user) %>
+                </div>
+                <div class="small-9 large-11 columns">
+                  <strong><%= blab.user.name.split(' ')[0] %>: </strong>
+                  <%= blab.text %><br>
+                  <%= link_to 'details', blab, class: 'details' %>                                            
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="panel radius">
+        <strong>crickets...</strong>
+      </div>
+    <% end %>
+  </div>
+</div>
+```
+97) in  blabs/index.html.erb wrap gravatar in an a-tag as follows:  
+```html
+<a href="/users/<%= blab.user.id %>"><%= image_tag avatar_url(blab.user) %></a>
+```
+98) ```git add . ```  
+99) ```git commit -m "add users show action and gravatars" ```  
+100) make a new file in views/blabs called _list.html.erb that looks like this:  
+```html
+<% if @blabs.present? %>
+  <ul id="blab-list">
+    <% @blabs.each do |blab| %>
+      <li class="blab">
+        <div class="panel radius">
+          <div class="row">
+            <div class="small-3 large-1 columns">
+              <a href="/users/<%= blab.user.id %>"><%= image_tag avatar_url(blab.user) %></a>
+            </div>
+            <div class="small-9 large-11 columns">
+              <strong><%= blab.user.name.split(' ')[0] %>: </strong>
+              <%= blab.text %><br>
+              <%= link_to 'details', blab, class: 'details' %>                                            
+            </div>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+     <div class="panel radius">
+          <strong>crickets...</strong>
+     </div>
+<% end %>
+```
+101) replace your entire blabs/index.hml.erb with this:  
+```html
+<div class="row" id="index-blab">
+  <div class="small-12 columns">
+    <h1>All The Blabber</h1>
+    <%= link_to 'new blab', new_blab_path, class: "button radius" %>
+    <%= render 'list' %>
+  </div>
+</div>
+```
+102) replace your entire users/show.html.erb with this:  
+```html
+<div class="row" id="index-blab">
+  <div class="small-12 columns">
+    <h1><%= @user.name.split(' ')[0] %>'s Blabber</h1>
+    <%= render 'blabs/list' %>
+  </div>
+</div>
+```
+103) in models/user.rb add the following method  
+```ruby
+def first_name
+  self.name.split(' ')[0]
+end
+```
+104) replace all instances of ```.name.split(' ')[0]``` with ```.first_name```  
+  
+105) add this to your gemfile: ``` gem 'ransack' ```  
+106) ```bundle```
+107) make the index action of blabs_controller look like this:  
+```ruby
+def index
+  @search = Blab.search(params[:q])
+  @blabs = @search.result
 
 
+  respond_to do |format|
+    format.html # index.html.erb
+    format.json { render json: @blabs }
+  end
+end
+```
+108) add to blabs/index.html below link_to 'new blab' and above render 'list':
+```html
+<%= search_form_for @search do |f| %>
+  <div class="row">
+	  <div class="small-12 columns ransack">
+	    <%= f.text_field :text_cont, {placeholder: 'search the blabber...'} %>
+	    <%= f.submit "search", class: "ransack button secondary small" %>
+	  </div>                
+	</div>
+<% end %>
+```
+109) ```git add . ```  
+110) ```git commit -m "first_name method, dry up views, ransack" ```  
+111) ```git push heroku```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### NOW GO MAKE IT BETTER!
 
