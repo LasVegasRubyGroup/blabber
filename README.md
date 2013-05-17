@@ -204,35 +204,35 @@ resources :users, only: [:create]
 39) add the following code to users/new.html.erb:  
 ```html
 <div class="row" id="signup">
-	<div class="small-12 columns">
+  <div class="small-12 columns">
 
-		<h1>Sign Up</h1>
+    <h1>Sign Up</h1>
 
-		<%= form_for @user do |f| %>
-			<% if @user.errors.any? %>
-				<% @user.errors.full_messages.each do |message| %>
-					<div class="alert-box alert"><%= message %></div>
-				<% end %>
-			<% end %>
-			<div class="field">
-				<%= f.label :name %><br>
-				<%= f.text_field :name %>
-			</div>
-			<div class="field">
-				<%= f.label :email %><br>
-				<%= f.text_field :email %>
-			</div>
-			<div class="field">
-				<%= f.label :password %><br>
-				<%= f.password_field :password %>
-			</div>
-			<div class="field">
-				<%= f.label :password_confirmation %><br>
-				<%= f.password_field :password_confirmation %>
-			</div>
-			<div><%= f.submit "Sign Up", class: "button radius" %></div>
-		<% end %>
-	</div>
+    <%= form_for @user do |f| %>
+      <% if @user.errors.any? %>
+        <% @user.errors.full_messages.each do |message| %>
+          <div class="alert-box alert"><%= message %></div>
+        <% end %>
+      <% end %>
+      <div class="field">
+        <%= f.label :name %><br>
+        <%= f.text_field :name %>
+      </div>
+      <div class="field">
+        <%= f.label :email %><br>
+        <%= f.text_field :email %>
+      </div>
+      <div class="field">
+        <%= f.label :password %><br>
+        <%= f.password_field :password %>
+      </div>
+      <div class="field">
+        <%= f.label :password_confirmation %><br>
+        <%= f.password_field :password_confirmation %>
+      </div>
+      <div><%= f.submit "Sign Up", class: "button radius" %></div>
+    <% end %>
+  </div>
 </div>
 ```
 40) make your index.html.erb look like this:  
@@ -774,11 +774,11 @@ end
 ```html
 <%= search_form_for @search do |f| %>
   <div class="row">
-	  <div class="small-12 columns ransack">
-	    <%= f.text_field :text_cont, {placeholder: 'search the blabber...'} %>
-	    <%= f.submit "search", class: "ransack button secondary small" %>
-	  </div>                
-	</div>
+    <div class="small-12 columns ransack">
+      <%= f.text_field :text_cont, {placeholder: 'search the blabber...'} %>
+      <%= f.submit "search", class: "ransack button secondary small" %>
+    </div>                
+  </div>
 <% end %>
 ```
 109) ```git add . ```  
