@@ -238,19 +238,19 @@ resources :users, only: [:create]
 40) make your index.html.erb look like this:  
 ```html
 <div class="row" id="welcome">
-	<div class="large-8 large-offset-2 columns">
-		<div class="panel radius">
-			<h2>Welcome to Blabber</h2>
-			<div class="row">
-				<div class="large-6 large-offset-3 columns">
-					<div class="panel radius white">
-						<h3>if ur a noob</h3>
-						<%= link_to "Sign Up", signup_path, class: "button radius" %>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="large-8 large-offset-2 columns">
+    <div class="panel radius">
+      <h2>Welcome to Blabber</h2>
+      <div class="row">
+        <div class="large-6 large-offset-3 columns">
+          <div class="panel radius white">
+            <h3>if ur a noob</h3>
+            <%= link_to "Sign Up", signup_path, class: "button radius" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 ```
 41) ```git add . ```  
@@ -280,8 +280,8 @@ resources :sessions, only: [:create]
 ```ruby
 class SessionsController < ApplicationController
 
- def new
- end
+  def new
+  end
 
   def create
     user = User.find_by_email(params[:email])
@@ -306,22 +306,22 @@ end
 49) make sessions/new.html.erb look like this:  
 ```html
 <div class="row" id="signin">
-	<div class="small-12 columns">
+  <div class="small-12 columns">
 
-		<h1>Sign In</h1>
+    <h1>Sign In</h1>
 
-		<%= form_tag sessions_path do %>
-			<div class="field">
-				<%= label_tag :email %><br>
-				<%= text_field_tag :email, params[:email] %>
-			</div>
-			<div class="field">
-				<%= label_tag :password %><br>
-				<%= password_field_tag :password %>
-			</div>
-			<div><%= submit_tag "Sign In", class: "button radius" %></div>
-		<% end %>
-	</div>
+    <%= form_tag sessions_path do %>
+      <div class="field">
+        <%= label_tag :email %><br>
+        <%= text_field_tag :email, params[:email] %>
+      </div>
+      <div class="field">
+        <%= label_tag :password %><br>
+        <%= password_field_tag :password %>
+      </div>
+      <div><%= submit_tag "Sign In", class: "button radius" %></div>
+    <% end %>
+  </div>
 </div>
 ```
 50) in application.html.erb add the sign in logic to the nav:  
@@ -338,14 +338,14 @@ end
     </ul>
     <section class="top-bar-section">
       <ul class="right">
-				<% if current_user %>
-					<li><a>Hi <%= current_user.name.split(' ')[0] %>!</a><li>
-					<li class="divider"></li>
-					<li><%= link_to "Sign Out", signout_path %></li>
-				<% else %>
-					<li class="divider"></li>
-					<li><%= link_to "Sign In", signin_path %></li>
-				<% end %>
+        <% if current_user %>
+          <li><a>Hi <%= current_user.name.split(' ')[0] %>!</a><li>
+          <li class="divider"></li>
+          <li><%= link_to "Sign Out", signout_path %></li>
+        <% else %>
+          <li class="divider"></li>
+          <li><%= link_to "Sign In", signin_path %></li>
+        <% end %>
       </ul>
     </section>
   </nav>
@@ -354,13 +354,13 @@ end
 51) add session id assignment to create action in users_controller.rb as follows:   
 ```ruby
 def create
-	@user = User.new(params[:user])
-	if @user.save
-		session[:user_id] = @user.id
-		redirect_to root_url, notice: "prepare to blab!"
-	else
-		render "new"
-	end
+  @user = User.new(params[:user])
+  if @user.save
+    session[:user_id] = @user.id
+    redirect_to root_url, notice: "prepare to blab!"
+  else
+    render "new"
+  end
 end
 ```
 51) change the title link in the nav as follows:  
@@ -370,53 +370,53 @@ end
 52) add the following code just below the nav:  
 ```html
 <% if flash[:notice] %>
-	<div class="global alert-box">
-		<%= flash[:notice] %>
-		<a href="" class="close">&times;</a>
-	</div>
+  <div class="global alert-box">
+    <%= flash[:notice] %>
+    <a href="" class="close">&times;</a>
+  </div>
 <% elsif flash[:error] %>
-	<div class="global alert-box alert">
-		<%= flash[:error] %>
-		<a href="" class="close">&times;</a>
-	</div>
+  <div class="global alert-box alert">
+    <%= flash[:error] %>
+    <a href="" class="close">&times;</a>
+  </div>
 <% end %>
 ```
 53) modify index.html.erb as follows:  
 ```html
 <div class="row" id="welcome">
-	<div class="large-8 large-offset-2 columns">
-		<div class="panel radius">
-			<h2>Welcome to Blabber</h2>
+  <div class="large-8 large-offset-2 columns">
+    <div class="panel radius">
+      <h2>Welcome to Blabber</h2>
 
-			<% if current_user %>
-				<div class="row">
-					<div class="large-8 large-offset-2 columns">
-						<div class="panel radius white">
-							<h3>go do some blabbing!</h3>
-						</div>
-					</div>
-				</div>
-			<% else %>
-				<div class="row">
-					<div class="large-6 large-offset-3 columns">
-						<div class="panel radius white">
-							<h3>if ur a user</h3>
-							<%= link_to "Sign In", signin_path, class: "button radius" %>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="large-6 large-offset-3 columns">
-						<div class="panel radius white">
-							<h3>if ur a noob</h3>
-							<%= link_to "Sign Up", signup_path, class: "button radius" %>
-						</div>
-					</div>
-				</div>
-			<% end %>
+      <% if current_user %>
+        <div class="row">
+          <div class="large-8 large-offset-2 columns">
+            <div class="panel radius white">
+              <h3>go do some blabbing!</h3>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="row">
+          <div class="large-6 large-offset-3 columns">
+            <div class="panel radius white">
+              <h3>if ur a user</h3>
+              <%= link_to "Sign In", signin_path, class: "button radius" %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="large-6 large-offset-3 columns">
+            <div class="panel radius white">
+              <h3>if ur a noob</h3>
+              <%= link_to "Sign Up", signup_path, class: "button radius" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
-		</div>
-	</div>
+    </div>
+  </div>
 </div>
 ```
 54) ```git add . ```  
@@ -431,14 +431,14 @@ gem 'bcrypt-ruby'
 gem 'pg'
 
 group :assets do
-	gem 'sass-rails',   '~> 3.2.3'
-	gem 'coffee-rails', '~> 3.2.1'
-	gem 'uglifier', '>= 1.0.3'
-	gem 'zurb-foundation'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'uglifier', '>= 1.0.3'
+  gem 'zurb-foundation'
 end
 
 group :development do
-	gem 'sqlite3'
+  gem 'sqlite3'
 end
 ```
 57) ```bundle``` 
@@ -475,9 +475,9 @@ config.assets.initialize_on_precompile = false
 class CreateBlabs < ActiveRecord::Migration
   def change
     create_table :blabs do |t|
-			t.string :text
-			t.integer :user_id
-			t.timestamps
+      t.string :text
+      t.integer :user_id
+      t.timestamps
     end
   end
 end
