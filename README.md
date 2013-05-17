@@ -615,7 +615,10 @@ redirect_to blabs_path, notice: "prepare to blab!"
 86) define authentication method in application_controller below the word private:  
 ```ruby
 def authorize
-  redirect_to signin_path, alert: "please login first" if current_user.nil?
+  if current_user.nil?
+    flash[:error] = "please login first"
+    redirect_to signin_path
+  end 
 end
 ```
 87) add a before filter to the top of blabs controller:  
