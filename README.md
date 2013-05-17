@@ -147,7 +147,7 @@ a img:hover {border: 1px solid #FC8E6C;}
 */
 ```
 27) ```git add . ```  
-28) ```git commit -m "improve index and paste custom css"
+28) ```git commit -m "improve index and paste custom css" ```  
 29) open models/user.rb and make it look like this:
 ```ruby
 class CreateUsers < ActiveRecord::Migration
@@ -165,9 +165,9 @@ end
 31) make models/user.rb look like this:  
 ```ruby
 class User < ActiveRecord::Base
-	attr_accessible :name, :email, :password, :password_confirmation
-	validates_uniqueness_of :email
-	has_secure_password
+ attr_accessible :name, :email, :password, :password_confirmation
+ validates_uniqueness_of :email
+ has_secure_password
 end
 ```
 32) add this to your gemfile: ```gem "bcrypt-ruby"```  
@@ -234,6 +234,74 @@ resources :users, only: [:create]
 </div>
 ```
 40) make your index.html.erb look like this:  
+```html
+<div class="row" id="welcome">
+	<div class="large-8 large-offset-2 columns">
+		<div class="panel radius">
+			<h2>Welcome to Blabber</h2>
+			<div class="row">
+				<div class="large-6 large-offset-3 columns">
+					<div class="panel radius white">
+						<h3>if ur a noob</h3>
+						<%= link_to "Sign Up", signup_path, class: "button radius" %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+```
+41) ```git add . ```  
+42) ```git commit -m "add user model and sign up form" ```  
+43) make application_controller.rb look like this:  
+```ruby
+class ApplicationController < ActionController::Base
+ protect_from_forgery
+ 
+ private
+
+ def current_user
+  @current_user ||= User.find(session[:user_id]) if session[:user_id]
+ end
+ helper_method :current_user
+ 
+end
+```
+44) add these two lines to to config/routes.rb:  
+```ruby
+get 'signin', to: 'sessions#new', as: 'signin'
+get 'signout', to: 'sessions#destroy', as: 'signout'
+resources :sessions, only: [:create]
+```
+45) make a new file called sessions_controller.rb inside app/controllers  
+46) make sessions_controller.rb look like this:  
+```ruby
+class SessionsController < ApplicationController
+
+ def new
+ end
+
+ def create
+  user = User.find_by_email(params[:email])
+  if user && user.authenticate(params[:password])
+   session[:user_id] = user.id
+   redirect_to root_url, notice: "greetings earthling!"
+  else
+   flash[:error] = "email or password is invalid"
+   render "new"
+  end
+ end
+
+ def destroy
+  session[:user_id] = nil
+  redirect_to root_url, notice: "see ya later alligator!"
+ end
+
+end
+```
+
+
+
 
 
 
