@@ -1,5 +1,8 @@
 Blabber::Application.routes.draw do
 
+  resources :blabs
+
+
 	root :to => 'site#index'
 
 	get 'signup', to: 'users#new', as: 'signup' 

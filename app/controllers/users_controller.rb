@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		if @user.save
 			session[:user_id] = @user.id
-			redirect_to root_url, notice: "prepare to blab!"
+			redirect_to blabs_path, notice: "prepare to blab!"
 		else
 			render "new"
 		end
