@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 gem 'jquery-rails'
+gem 'bcrypt-ruby'
 gem 'sqlite3'
 
 group :assets do
