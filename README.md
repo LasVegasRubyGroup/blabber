@@ -98,7 +98,7 @@ back into the header below this:
   </div>
 </div>
 ```
-24) make a new file inside assets/stylesheets called custom.css.scss
+24) make a new file inside assets/stylesheets called custom.css.scss  
 25) paste the following code into custom.css.scss:
 ```scss
 body {min-height: 540px; padding-bottom: 50px;}
@@ -146,7 +146,7 @@ a img:hover {border: 1px solid #FC8E6C;}
 *= require_tree .
 */
 ```
-27) ```git add . ```
+27) ```git add . ```  
 28) ```git commit -m "improve index and paste custom css"
 29) open models/user.rb and make it look like this:
 ```ruby
@@ -161,6 +161,84 @@ class CreateUsers < ActiveRecord::Migration
   end
 end
 ```
+30) ```rake db:migrate```  
+31) make models/user.rb look like this:  
+```ruby
+class User < ActiveRecord::Base
+	attr_accessible :name, :email, :password, :password_confirmation
+	validates_uniqueness_of :email
+	has_secure_password
+end
+```
+32) add this to your gemfile: ```gem "bcrypt-ruby"```  
+33) ```bundle```(server restart required)  
+34) make a new file inside app/controllers called users_controller.rb  
+35) add the following code to users_controller.rb:  
+```ruby
+class UsersController < ApplicationController
+
+  def new
+    @user = User.new
+  end
+ 
+  def create
+    @user = User.new(params[:user])
+    if @user.save
+      redirect_to root_url, notice: "prepare to blab!"
+    else
+      render "new"
+    end
+  end
+
+end
+```
+36) add these two lines to config/routes.rb:  
+```ruby
+get 'signup', to: 'users#new', as: 'signup' 
+resources :users, only: [:create]
+```
+37) create a folder inside of views called users  
+38) create a new file in views/users called new.html.erb  
+39) add the following code to users/new.html.erb:  
+```html
+<div class="row" id="signup">
+	<div class="small-12 columns">
+
+		<h1>Sign Up</h1>
+
+		<%= form_for @user do |f| %>
+			<% if @user.errors.any? %>
+				<% @user.errors.full_messages.each do |message| %>
+					<div class="alert-box alert"><%= message %></div>
+				<% end %>
+			<% end %>
+			<div class="field">
+				<%= f.label :name %><br>
+				<%= f.text_field :name %>
+			</div>
+			<div class="field">
+				<%= f.label :email %><br>
+				<%= f.text_field :email %>
+			</div>
+			<div class="field">
+				<%= f.label :password %><br>
+				<%= f.password_field :password %>
+			</div>
+			<div class="field">
+				<%= f.label :password_confirmation %><br>
+				<%= f.password_field :password_confirmation %>
+			</div>
+			<div><%= f.submit "Sign Up", class: "button radius" %></div>
+		<% end %>
+	</div>
+</div>
+```
+40) make your index.html.erb look like this:  
+
+
+
+
+
 
 
 
