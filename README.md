@@ -100,7 +100,7 @@ back into the header below this:
 ```
 24) make a new file inside assets/stylesheets called custom.css.scss
 25) paste the following code into custom.css.scss:
-```css
+```scss
 body {min-height: 540px; padding-bottom: 50px;}
 #welcome, #signup, #signin, #new-blab, #edit-blab, #show-blab {margin-top: 80px;}
 #welcome .panel {text-align: center;}
