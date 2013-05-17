@@ -1,4 +1,7 @@
 class BlabsController < ApplicationController
+
+	before_filter :authorize 
+	
   # GET /blabs
   # GET /blabs.json
   def index

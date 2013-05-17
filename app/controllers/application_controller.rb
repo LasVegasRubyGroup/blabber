@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery
 
+	def authorize
+		redirect_to signin_path, alert: "please login first" if current_user.nil?
+	end
+
 	private
 
 	def current_user
