@@ -789,5 +789,5 @@ end
 111) ```git push heroku```
 
 
-### completed app: http://vast-eyrie-1275.herokuapp.com/
+### now go make it better!
 
