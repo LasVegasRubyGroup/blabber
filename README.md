@@ -522,7 +522,7 @@ to look like this instead:
 ```ruby
 redirect_to blabs_path, notice: "prepare to blab!"
 ```
-78) change the title link in the nav as follows:  
+78) change the title link in the pages/landing.html.erb nav as follows:  
 ```html
 <h1><a href="/blabs">Blabber</a></h1>
 ```
@@ -701,7 +701,7 @@ resources :users, only: [:create, :show]
   </div>
 </div>
 ```
-98) in  blabs/index.html.erb wrap gravatar in an a-tag as follows:  
+98) in blabs/index.html.erb wrap gravatar in an a-tag as follows:  
 ```html
 <a href="/users/<%= blab.user.id %>"><%= image_tag avatar_url(blab.user) %></a>
 ```
