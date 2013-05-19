@@ -196,7 +196,7 @@ end
 ```
 36) add these two lines to config/routes.rb:  
 ```ruby
-get 'signup', to: 'users#new', as: 'signup' 
+get 'signup', to: 'users#new' 
 resources :users, only: [:create]
 ```
 37) create a folder inside of views called users  
@@ -271,8 +271,8 @@ end
 ```
 44) add these two lines to to config/routes.rb:  
 ```ruby
-get 'signin', to: 'sessions#new', as: 'signin'
-get 'signout', to: 'sessions#destroy', as: 'signout'
+get 'signin', to: 'sessions#new'
+get 'signout', to: 'sessions#destroy'
 resources :sessions, only: [:create]
 ```
 45) make a new file called sessions_controller.rb inside app/controllers  
