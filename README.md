@@ -19,23 +19,23 @@ rails -v
 5) ```git add .```   
 6) ```git commit -m "first commit"```   
 7) delete public/index.html  
-8) make a new file called site_controller.rb inside controllers folder  
-9) add following code to site_controller.rb:
+8) inside config/routes.rb at the top add:  
 ```ruby
-class SiteController < ApplicationController
-  def index
+root :to => 'pages#landing'
+```
+9) make a new file called pages_controller.rb inside controllers folder   
+10) add following code to pages_controller.rb:  
+```ruby
+class PagesController < ApplicationController
+  def landing
   end
 end
 ```
-10) inside config/routes.rb at the top add:
-```ruby
-root :to => 'site#index'
-```
-11) make a new folder inside views called "site"  
-12) make a new file inside site folder called index.html.erb  
-13) inside site/index.html.erb type "Welcome to Blabber"  
+11) make a new folder inside views called "pages"  
+12) make a new file inside site folder called landing.html.erb   
+13) inside pages/landing.html.erb type "Welcome to Blabber"  
 14) ```git add .```  
-15) ```git commit -m "add site index"```   
+15) ```git commit -m "add landing page"```   
 16) add foundation. your gem file should now look like this:  
 ```ruby
 source 'https://rubygems.org'

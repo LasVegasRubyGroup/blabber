@@ -3,7 +3,7 @@ Blabber::Application.routes.draw do
   resources :blabs
 
 
-	root :to => 'site#index'
+	root :to => 'pages#landing'
 
 	get 'signup', to: 'users#new', as: 'signup' 
 	resources :users, only: [:create, :show]
