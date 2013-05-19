@@ -90,7 +90,7 @@ back into the header below this:
 ```
 21) ```git add . ```  
 22) ```git commit -m "add foundation and top bar" ```  
-23) in index.html.erb replace "Welcome to Blabber" with this:
+23) in landing.html.erb replace "Welcome to Blabber" with this:
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
@@ -149,7 +149,7 @@ a img:hover {border: 1px solid #FC8E6C;}
 */
 ```
 27) ```git add . ```  
-28) ```git commit -m "improve index and paste custom css" ```  
+28) ```git commit -m "improve landing and paste custom css" ```  
 29) open models/user.rb and make it look like this:
 ```ruby
 class CreateUsers < ActiveRecord::Migration
@@ -235,7 +235,7 @@ resources :users, only: [:create]
   </div>
 </div>
 ```
-40) make your index.html.erb look like this:  
+40) make your landing.html.erb look like this:  
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
@@ -381,7 +381,7 @@ end
   </div>
 <% end %>
 ```
-53) modify index.html.erb as follows:  
+53) modify landing.html.erb as follows:  
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
