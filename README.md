@@ -84,6 +84,18 @@ back into the header below this:
     </nav>
   </div>
 
+	<% if flash[:notice] %>
+	  <div class="global alert-box">
+	    <%= flash[:notice] %>
+	    <a href="" class="close">&times;</a>
+	  </div>
+	<% elsif flash[:error] %>
+	  <div class="global alert-box alert">
+	    <%= flash[:error] %>
+	    <a href="" class="close">&times;</a>
+	  </div>
+	<% end %>
+
   <%= yield %>
 
 </body>
@@ -363,21 +375,7 @@ def create
   end
 end
 ```
-52) add the following code just below the nav:  
-```html
-<% if flash[:notice] %>
-  <div class="global alert-box">
-    <%= flash[:notice] %>
-    <a href="" class="close">&times;</a>
-  </div>
-<% elsif flash[:error] %>
-  <div class="global alert-box alert">
-    <%= flash[:error] %>
-    <a href="" class="close">&times;</a>
-  </div>
-<% end %>
-```
-53) modify landing.html.erb as follows:  
+52) modify landing.html.erb as follows:  
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
@@ -415,9 +413,9 @@ end
   </div>
 </div>
 ```
-54) ```git add . ```  
-55) ```git commit -m "add session controller and sign in form" ```  
-56) prepare for deployment by adding pg gem. gemfile should look like this:  
+53) ```git add . ```  
+54) ```git commit -m "add session controller and sign in form" ```  
+55) prepare for deployment by adding pg gem. gemfile should look like this:  
 ```ruby
 source 'https://rubygems.org'
 
@@ -440,8 +438,8 @@ group :production do
   gem 'pg'
 end
 ```
-57) ```bundle```   
-58) delete production from config/databse.yml, should look like this now:
+56) ```bundle```   
+57) delete production from config/databse.yml, should look like this now:
 ```ruby
 development:
   adapter: sqlite3
@@ -455,21 +453,21 @@ test:
   pool: 5
   timeout: 5000
 ```
-59) add the following line anywhere in config/application.rb for heroku:  
+58) add the following line anywhere in config/application.rb for heroku:  
 ```ruby
 config.assets.initialize_on_precompile = false 
 ```
-60) ```git add . ```  
-61) ```git commit -m "add postgres and heroku configs" ```  
-62) you should already have created a heroku account (https://id.heroku.com/signup)  
-63) you should already have heroku toolbelt (https://toolbelt.heroku.com/) installed  
-64) test connection by running ```heroku login```  
-65) ```heroku create```  
-66) ```git push heroku master```  
-67) ```heroku run rake db:migrate```  
-68) copy paste url into browser  
-69) ```rails g scaffold blab```  
-70) open migrate/######create_blabs.rb and make it look like this:  
+59) ```git add . ```  
+60) ```git commit -m "add postgres and heroku configs" ```  
+61) you should already have created a heroku account (https://id.heroku.com/signup)  
+62) you should already have heroku toolbelt (https://toolbelt.heroku.com/) installed  
+63) test connection by running ```heroku login```  
+64) ```heroku create```  
+65) ```git push heroku master```  
+66) ```heroku run rake db:migrate```  
+67) copy paste url into browser  
+68) ```rails g scaffold blab```  
+69) open migrate/######create_blabs.rb and make it look like this:  
 ```ruby
 class CreateBlabs < ActiveRecord::Migration
   def change
@@ -481,8 +479,8 @@ class CreateBlabs < ActiveRecord::Migration
   end
 end
 ```
-71) ```rake db:migrate```   
-72) make models/blab.rb look like this:  
+70) ```rake db:migrate```   
+71) make models/blab.rb look like this:  
 ```ruby
 class Blab < ActiveRecord::Base
   attr_accessible :text
@@ -490,23 +488,23 @@ class Blab < ActiveRecord::Base
   belongs_to :user
 end
 ```
-73) add the following line to models/user.rb:  
+72) add the following line to models/user.rb:  
 ```ruby
 has_many :blabs
 ```
-74) in blabs_controller.rb on line 47 directly below "if @blab.save" add this:  
+73) in blabs_controller.rb on line 47 directly below "if @blab.save" add this:  
 ```ruby
 current_user.blabs << @blab
 ```
-75) in blabs_controller.rb change line 48 to say:  
+74) in blabs_controller.rb change line 48 to say:  
 ```ruby
 format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
 ```
-76) in blabs_controller.rb change line 64 to say:  
+75) in blabs_controller.rb change line 64 to say:  
 ```ruby
 format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
 ```
-77) in sessions_controller.rb change the following line:  
+76) in sessions_controller.rb change the following line:  
 ```ruby
 redirect_to root_url, notice: "greetings earthling!"
 ```
@@ -791,6 +789,31 @@ end
 111) ```git commit -m "first_name method, dry up views, ransack" ```  
 112) ```git push heroku```
 
+### completed app: http://vast-eyrie-1275.herokuapp.com/
 
-### now go make it better!
+### more resources:
+
+http://meetup.lvrug.org/
+
+http://guides.rubyonrails.org/
+
+http://ruby.bastardsbook.com/
+
+http://www.ruby-doc.org/
+
+http://railscasts.com/
+
+http://www.codeschool.com/
+
+http://ruby.railstutorial.org/
+
+http://rubymonk.com/
+
+
+
+
+
+
+
+
 
