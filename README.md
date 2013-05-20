@@ -795,6 +795,8 @@ end
 
 http://meetup.lvrug.org/
 
+http://www.codeschool.com/
+
 http://guides.rubyonrails.org/
 
 http://ruby.bastardsbook.com/
@@ -802,8 +804,6 @@ http://ruby.bastardsbook.com/
 http://www.ruby-doc.org/
 
 http://railscasts.com/
-
-http://www.codeschool.com/
 
 http://ruby.railstutorial.org/
 
