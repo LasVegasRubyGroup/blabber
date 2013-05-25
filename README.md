@@ -161,8 +161,8 @@ a img:hover {border: 1px solid #FC8E6C;}
 */
 ```
 27) ```git add . ```  
-28) ```git commit -m "improve landing and paste custom css" ``` 
-29) ```rails g model user ```  
+28) ```git commit -m "improve landing and paste custom css" ```   
+29) ```rails g model user ```   
 30) open migrate/######create_users.rb and make it look like this:
 ```ruby
 class CreateUsers < ActiveRecord::Migration
