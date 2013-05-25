@@ -100,7 +100,7 @@ back into the header below this:
 
 </body>
 ```
-21) ```git add . ```  
+21) ```git add . ```   
 22) ```git commit -m "add foundation and top bar" ```  
 23) in landing.html.erb replace "Welcome to Blabber" with this:
 ```html
@@ -161,8 +161,9 @@ a img:hover {border: 1px solid #FC8E6C;}
 */
 ```
 27) ```git add . ```  
-28) ```git commit -m "improve landing and paste custom css" ```  
-29) open models/user.rb and make it look like this:
+28) ```git commit -m "improve landing and paste custom css" ``` 
+29) ```rails g model user ```  
+30) open migrate/######create_users.rb and make it look like this:
 ```ruby
 class CreateUsers < ActiveRecord::Migration
   def change
@@ -175,8 +176,8 @@ class CreateUsers < ActiveRecord::Migration
   end
 end
 ```
-30) ```rake db:migrate```  
-31) make models/user.rb look like this:  
+31) ```rake db:migrate```  
+32) make models/user.rb look like this:  
 ```ruby
 class User < ActiveRecord::Base
  attr_accessible :name, :email, :password, :password_confirmation
@@ -184,10 +185,10 @@ class User < ActiveRecord::Base
  has_secure_password
 end
 ```
-32) add this to your gemfile: ```gem "bcrypt-ruby"```  
-33) ```bundle```(server restart required)  
-34) make a new file inside app/controllers called users_controller.rb  
-35) add the following code to users_controller.rb:  
+33) add this to your gemfile: ```gem "bcrypt-ruby"```  
+34) ```bundle```(server restart required)  
+35) make a new file inside app/controllers called users_controller.rb  
+36) add the following code to users_controller.rb:  
 ```ruby
 class UsersController < ApplicationController
 
@@ -206,14 +207,14 @@ class UsersController < ApplicationController
 
 end
 ```
-36) add these two lines to config/routes.rb:  
+37) add these two lines to config/routes.rb:  
 ```ruby
 get 'signup', to: 'users#new' 
 resources :users, only: [:create]
 ```
-37) create a folder inside of views called users  
-38) create a new file in views/users called new.html.erb  
-39) add the following code to users/new.html.erb:  
+38) create a folder inside of views called users  
+39) create a new file in views/users called new.html.erb  
+40) add the following code to users/new.html.erb:  
 ```html
 <div class="row" id="signup">
   <div class="small-12 columns">
@@ -247,7 +248,7 @@ resources :users, only: [:create]
   </div>
 </div>
 ```
-40) make your landing.html.erb look like this:  
+41) make your landing.html.erb look like this:  
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
@@ -265,9 +266,9 @@ resources :users, only: [:create]
   </div>
 </div>
 ```
-41) ```git add . ```  
-42) ```git commit -m "add user model and sign up form" ```  
-43) make application_controller.rb look like this:  
+42) ```git add . ```  
+43) ```git commit -m "add user model and sign up form" ```  
+44) make application_controller.rb look like this:  
 ```ruby
 class ApplicationController < ActionController::Base
   protect_from_forgery
@@ -281,14 +282,14 @@ class ApplicationController < ActionController::Base
  
 end
 ```
-44) add these two lines to to config/routes.rb:  
+45) add these two lines to to config/routes.rb:  
 ```ruby
 get 'signin', to: 'sessions#new'
 get 'signout', to: 'sessions#destroy'
 resources :sessions, only: [:create]
 ```
-45) make a new file called sessions_controller.rb inside app/controllers  
-46) make sessions_controller.rb look like this:  
+46) make a new file called sessions_controller.rb inside app/controllers  
+47) make sessions_controller.rb look like this:  
 ```ruby
 class SessionsController < ApplicationController
 
@@ -313,9 +314,9 @@ class SessionsController < ApplicationController
 
 end
 ```
-47) make a new folder in app/views called sessions  
-48) make a new file called new.html.erb inside views/sessions  
-49) make sessions/new.html.erb look like this:  
+48) make a new folder in app/views called sessions  
+49) make a new file called new.html.erb inside views/sessions  
+50) make sessions/new.html.erb look like this:  
 ```html
 <div class="row" id="signin">
   <div class="small-12 columns">
@@ -336,7 +337,7 @@ end
   </div>
 </div>
 ```
-50) in application.html.erb add the sign in logic to the nav:  
+51) in application.html.erb add the sign in logic to the nav:  
 ```html
 <div class="fixed">
   <nav class="top-bar">
@@ -363,7 +364,7 @@ end
   </nav>
 </div>
 ```
-51) add session id assignment to create action in users_controller.rb as follows:   
+52) add session id assignment to create action in users_controller.rb as follows:   
 ```ruby
 def create
   @user = User.new(params[:user])
@@ -375,7 +376,7 @@ def create
   end
 end
 ```
-52) modify landing.html.erb as follows:  
+53) modify landing.html.erb as follows:  
 ```html
 <div class="row" id="welcome">
   <div class="large-8 large-offset-2 columns">
@@ -413,9 +414,9 @@ end
   </div>
 </div>
 ```
-53) ```git add . ```  
-54) ```git commit -m "add session controller and sign in form" ```  
-55) prepare for deployment by adding pg gem. gemfile should look like this:  
+54) ```git add . ```  
+55) ```git commit -m "add session controller and sign in form" ```  
+56) prepare for deployment by adding pg gem. gemfile should look like this:  
 ```ruby
 source 'https://rubygems.org'
 
@@ -438,8 +439,8 @@ group :production do
   gem 'pg'
 end
 ```
-56) ```bundle```   
-57) delete production from config/databse.yml, should look like this now:
+57) ```bundle```   
+58) delete production from config/databse.yml, should look like this now:
 ```ruby
 development:
   adapter: sqlite3
@@ -453,21 +454,21 @@ test:
   pool: 5
   timeout: 5000
 ```
-58) add the following line anywhere in config/application.rb for heroku:  
+59) add the following line anywhere in config/application.rb for heroku:  
 ```ruby
 config.assets.initialize_on_precompile = false 
 ```
-59) ```git add . ```  
-60) ```git commit -m "add postgres and heroku configs" ```  
-61) you should already have created a heroku account (https://id.heroku.com/signup)  
-62) you should already have heroku toolbelt (https://toolbelt.heroku.com/) installed  
-63) test connection by running ```heroku login```  
-64) ```heroku create```  
-65) ```git push heroku master```  
-66) ```heroku run rake db:migrate```  
-67) copy paste url into browser  
-68) ```rails g scaffold blab```  
-69) open migrate/######create_blabs.rb and make it look like this:  
+60) ```git add . ```  
+61) ```git commit -m "add postgres and heroku configs" ```  
+62) you should already have created a heroku account (https://id.heroku.com/signup)  
+63) you should already have heroku toolbelt (https://toolbelt.heroku.com/) installed  
+64) test connection by running ```heroku login```  
+65) ```heroku create```  
+66) ```git push heroku master```  
+67) ```heroku run rake db:migrate```  
+68) copy paste url into browser  
+69) ```rails g scaffold blab```  
+70) open migrate/######create_blabs.rb and make it look like this:  
 ```ruby
 class CreateBlabs < ActiveRecord::Migration
   def change
@@ -479,8 +480,8 @@ class CreateBlabs < ActiveRecord::Migration
   end
 end
 ```
-70) ```rake db:migrate```   
-71) make models/blab.rb look like this:  
+71) ```rake db:migrate```   
+72) make models/blab.rb look like this:  
 ```ruby
 class Blab < ActiveRecord::Base
   attr_accessible :text
@@ -488,23 +489,23 @@ class Blab < ActiveRecord::Base
   belongs_to :user
 end
 ```
-72) add the following line to models/user.rb:  
+73) add the following line to models/user.rb:  
 ```ruby
 has_many :blabs
 ```
-73) in blabs_controller.rb on line 47 directly below "if @blab.save" add this:  
+74) in blabs_controller.rb on line 47 directly below "if @blab.save" add this:  
 ```ruby
 current_user.blabs << @blab
 ```
-74) in blabs_controller.rb change line 48 to say:  
+75) in blabs_controller.rb change line 48 to say:  
 ```ruby
 format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
 ```
-75) in blabs_controller.rb change line 64 to say:  
+76) in blabs_controller.rb change line 64 to say:  
 ```ruby
 format.html { redirect_to blabs_path, notice: 'good job blabber mouth.' }
 ```
-76) in sessions_controller.rb change the following line:  
+77) in sessions_controller.rb change the following line:  
 ```ruby
 redirect_to root_url, notice: "greetings earthling!"
 ```
@@ -512,7 +513,7 @@ to look like this instead:
 ```ruby
 redirect_to blabs_path, notice: "greetings earthling!"
 ```
-77) in users_controller.rb change the following line:  
+78) in users_controller.rb change the following line:  
 ```ruby
 redirect_to root_url, notice: "prepare to blab!"
 ```
@@ -520,14 +521,14 @@ to look like this instead:
 ```ruby
 redirect_to blabs_path, notice: "prepare to blab!"
 ```
-78) change the title link in the pages/landing.html.erb nav as follows:  
+79) change the title link in the pages/landing.html.erb nav as follows:  
 ```html
 <h1><a href="/blabs">Blabber</a></h1>
 ```
-79) in stylesheets folder delete scaffolds.css.scss and blabs.css.scss  
-80) ```git add . ```  
-81) ```git commit -m "blab scaffold, model relationships, blabs redirects" ```  
-82) make views/blabs/new.html.erb look like this:  
+80) in stylesheets folder delete scaffolds.css.scss and blabs.css.scss  
+81) ```git add . ```  
+82) ```git commit -m "blab scaffold, model relationships, blabs redirects" ```  
+83) make views/blabs/new.html.erb look like this:  
 ```html
 <div class="row" id="new-blab">
   <div class="small-12 columns">
@@ -536,7 +537,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   </div>
 </div>
 ```
-83) make views/blabs/edit.html.erb look like this:  
+84) make views/blabs/edit.html.erb look like this:  
 ```html
 <div class="row" id="edit-blab">
   <div class="small-12 columns">
@@ -545,7 +546,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   </div>
 </div>
 ```
-84) make views/blabs/_form.html.erb look like this:  
+85) make views/blabs/_form.html.erb look like this:  
 ```html
 <%= form_for @blab do |f| %>
   <% if @blab.errors.any? %>
@@ -562,7 +563,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   <%= link_to 'go back', blabs_path, class: "button radius inline secondary" %>
 <% end %>
 ```
-85) make views/blabs/index.html.erb look like this:  
+86) make views/blabs/index.html.erb look like this:  
 ```html
 <div class="row" id="index-blab">
   <div class="small-12 columns">
@@ -590,7 +591,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   </div>
 </div>
 ```
-86) make views/blabs/show.html.erb look like this:  
+87) make views/blabs/show.html.erb look like this:  
 ```html
 <div class="row" id="show-blab">
   <div class="large-8 large-offset-2 columns">
@@ -613,7 +614,7 @@ redirect_to blabs_path, notice: "prepare to blab!"
   </div>
 </div>
 ```   
-87) define authentication method in application_controller below the word private:  
+88) define authentication method in application_controller below the word private:  
 ```ruby
 def authorize
   if current_user.nil?
@@ -622,15 +623,15 @@ def authorize
   end 
 end
 ```
-88) add a before filter to the top of blabs controller:  
+89) add a before filter to the top of blabs controller:  
 ```ruby
 before_filter :authorize
 ```
-89) ```git add . ```  
-90) ```git commit -m "add blab views and authentication filter" ```  
-91) ```git push heroku```  
-92) ```heroku run rake db:migrate```  
-93) in blabs/index.html change ```<li class="blab">``` as follows:  
+90) ```git add . ```  
+91) ```git commit -m "add blab views and authentication filter" ```  
+92) ```git push heroku```  
+93) ```heroku run rake db:migrate```  
+94) in blabs/index.html change ```<li class="blab">``` as follows:  
 ```html
 <li class="blab">
   <div class="panel radius">
@@ -647,25 +648,25 @@ before_filter :authorize
   </div>
 </li>
 ```
-94) in application_helper, add the following method:  
+95) in application_helper, add the following method:  
 ```ruby
 def avatar_url(user)
   gravatar_id = Digest::MD5::hexdigest(user.email).downcase
   "http://gravatar.com/avatar/#{gravatar_id}.png"
 end
 ```
-95) in users_controller.rb add a show method:  
+96) in users_controller.rb add a show method:  
 ```ruby
 def show
   @user = current_user
   @blabs = @user.blabs
 end
 ```
-96) in config routes add show to the users resource as follows:  
+97) in config routes add show to the users resource as follows:  
 ```ruby
 resources :users, only: [:create, :show] 
 ```
-97) make a new file in views/users called show.html.erb that looks like this:  
+98) make a new file in views/users called show.html.erb that looks like this:  
 ```html
 <div class="row" id="index-blab">
   <div class="small-12 columns">
@@ -699,13 +700,13 @@ resources :users, only: [:create, :show]
   </div>
 </div>
 ```
-98) in blabs/index.html.erb wrap gravatar in an a-tag as follows:  
+99) in blabs/index.html.erb wrap gravatar in an a-tag as follows:  
 ```html
 <a href="/users/<%= blab.user.id %>"><%= image_tag avatar_url(blab.user) %></a>
 ```
-99) ```git add . ```  
-100) ```git commit -m "add users show action and gravatars" ```  
-101) make a new file in views/blabs called _list.html.erb that looks like this:  
+100) ```git add . ```  
+101) ```git commit -m "add users show action and gravatars" ```  
+102) make a new file in views/blabs called _list.html.erb that looks like this:  
 ```html
 <% if @blabs.present? %>
   <ul id="blab-list">
@@ -732,7 +733,7 @@ resources :users, only: [:create, :show]
      </div>
 <% end %>
 ```
-102) replace your entire blabs/index.hml.erb with this:  
+103) replace your entire blabs/index.hml.erb with this:  
 ```html
 <div class="row" id="index-blab">
   <div class="small-12 columns">
@@ -742,7 +743,7 @@ resources :users, only: [:create, :show]
   </div>
 </div>
 ```
-103) replace your entire users/show.html.erb with this:  
+104) replace your entire users/show.html.erb with this:  
 ```html
 <div class="row" id="index-blab">
   <div class="small-12 columns">
@@ -751,17 +752,17 @@ resources :users, only: [:create, :show]
   </div>
 </div>
 ```
-104) in models/user.rb add the following method  
+105) in models/user.rb add the following method  
 ```ruby
 def first_name
   self.name.split(' ')[0]
 end
 ```
-105) replace all instances of ```.name.split(' ')[0]``` with ```.first_name```  
+106) replace all instances of ```.name.split(' ')[0]``` with ```.first_name```  
   
-106) add this to your gemfile: ``` gem 'ransack' ```  
-107) ```bundle```  
-108) make the index action of blabs_controller look like this:  
+107) add this to your gemfile: ``` gem 'ransack' ```  
+108) ```bundle```  
+109) make the index action of blabs_controller look like this:  
 ```ruby
 def index
   @search = Blab.search(params[:q])
@@ -774,7 +775,7 @@ def index
   end
 end
 ```
-109) add to blabs/index.html below link_to 'new blab' and above render 'list':
+110) add to blabs/index.html below link_to 'new blab' and above render 'list':
 ```html
 <%= search_form_for @search do |f| %>
   <div class="row">
@@ -785,9 +786,9 @@ end
   </div>
 <% end %>
 ```
-110) ```git add . ```  
-111) ```git commit -m "first_name method, dry up views, ransack" ```  
-112) ```git push heroku```
+111) ```git add . ```  
+112) ```git commit -m "first_name method, dry up views, ransack" ```  
+113) ```git push heroku```
 
 ### completed app: http://vast-eyrie-1275.herokuapp.com/
 
@@ -808,12 +809,4 @@ http://railscasts.com/
 http://ruby.railstutorial.org/
 
 http://rubymonk.com/
-
-
-
-
-
-
-
-
 
