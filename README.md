@@ -790,7 +790,6 @@ end
 112) ```git commit -m "first_name method, dry up views, ransack" ```  
 113) ```git push heroku```
 
-### completed app: http://vast-eyrie-1275.herokuapp.com/
 
 ### more resources:
 
